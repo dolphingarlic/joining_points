@@ -107,7 +107,10 @@ class Game():
         self._text = pygame.font.SysFont('Helvetica', 60)
         self._display_surf = pygame.display.set_mode(SIZE, pygame.HWSURFACE)
         self._running = True
+
         pygame.display.set_caption('Joining Points')
+        icon = pygame.image.load('joining_points.png')
+        pygame.display.set_icon(icon)
 
     def on_event(self, event):
         '''
@@ -165,7 +168,8 @@ class Game():
 
         if len(self.lines) == NUM_POINTS - 2:
             win_message = self._text.render('You Win!', False, WHITE)
-            self._display_surf.blit(win_message, (SIZE[0] // 2 - 120, SIZE[1] // 2 - 60))
+            self._display_surf.blit(
+                win_message, (SIZE[0] // 2 - 120, SIZE[1] // 2 - 60))
 
         pygame.display.flip()
 
