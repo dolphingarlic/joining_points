@@ -16,14 +16,16 @@ DIAMETER = 10
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
-NUM_POINTS = 24
+NUM_POINTS = 50
 
 
 def ccw(A, B, C):
     '''
     Checks if B is counterclockwise from C with origin A
     '''
+
     return (C[1] - A[1]) * (B[0] - A[0]) > (B[1] - A[1]) * (C[0] - A[0])
 
 
@@ -31,6 +33,7 @@ def intersect(A, B, C, D):
     '''
     Determines if the lines (A, B) and (C, D) intersect
     '''
+
     if (A == C or A == D or B == C or B == D):
         return False
     return ccw(A, C, D) != ccw(B, C, D) and ccw(A, B, C) != ccw(A, B, D)
@@ -89,6 +92,7 @@ class Game():
         self._clicked = -1
         self._display_surf = None
         self._image_surf = None
+        self._text = None
 
         self.points = pygame.sprite.Group()
         self.lines = []
@@ -99,6 +103,8 @@ class Game():
         '''
 
         pygame.init()
+        pygame.font.init()
+        self._text = pygame.font.SysFont('Helvetica', 60)
         self._display_surf = pygame.display.set_mode(SIZE, pygame.HWSURFACE)
         self._running = True
         pygame.display.set_caption('Joining Points')
@@ -140,7 +146,7 @@ class Game():
         Handles game logic
         '''
 
-        self.points.update()
+        pass
 
     def on_render(self):
         '''
@@ -156,6 +162,10 @@ class Game():
         if self._drawing:
             pygame.draw.line(self._display_surf, self._clicked_colour,
                              self._clicked_pos, pygame.mouse.get_pos(), 2)
+
+        if len(self.lines) == NUM_POINTS - 2:
+            win_message = self._text.render('You Win!', False, WHITE)
+            self._display_surf.blit(win_message, (SIZE[0] // 2 - 120, SIZE[1] // 2 - 60))
 
         pygame.display.flip()
 
