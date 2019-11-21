@@ -18,7 +18,7 @@ GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
-NUM_POINTS = 50
+NUM_POINTS = 20
 
 
 def ccw(A, B, C):
@@ -32,6 +32,7 @@ def ccw(A, B, C):
 def intersect(A, B, C, D):
     '''
     Determines if the lines (A, B) and (C, D) intersect
+    Returns false if they just share an endpoint
     '''
 
     if (A == C or A == D or B == C or B == D):
@@ -104,7 +105,7 @@ class Game():
 
         pygame.init()
         pygame.font.init()
-        self._text = pygame.font.SysFont('Helvetica', 60)
+        self._text = pygame.font.SysFont('Ubuntu', 60)
         self._display_surf = pygame.display.set_mode(SIZE, pygame.HWSURFACE)
         self._running = True
 
@@ -143,6 +144,11 @@ class Game():
                     self._clicked_colour = clicked[0].colour
                     self._clicked_pos = clicked[0].rect.center
                     self._clicked = clicked[0].id
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_r and pygame.key.get_mods() & pygame.KMOD_CTRL and len(self.lines):
+                self.lines.clear()
+                for i in range(NUM_POINTS):
+                    component[i] = i
 
     def on_loop(self):
         '''
